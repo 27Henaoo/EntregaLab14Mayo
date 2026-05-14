@@ -1,0 +1,196 @@
+﻿@page
+@model SalonesModel
+@{
+    ViewData["Title"] = "Salones";
+}
+<center>
+    <div>
+        <form method="POST"
+              enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+
+            <div align="left">
+                <h3>Salones</h3>
+            </div>
+
+            <div>
+                <input type="submit"
+                       value="Refrescar"
+                       class="btn btn-secondary"
+                       asp-page-handler="BtRefrescar" />
+                <input type="submit"
+                       value="Nuevo"
+                       class="btn btn-secondary"
+                       asp-page-handler="BtNuevo"
+                       disabled="@(Model.Salon != null)" />
+                <input type="submit"
+                       value="Guardar"
+                       class="btn btn-secondary"
+                       asp-page-handler="BtGuardar"
+                       disabled="@(Model.Salon == null)" />
+            </div>
+
+            @if (Model.Salon != null)
+            {
+                <input type="hidden"
+                       asp-for="@Model.Salon!.Id" />
+
+                <div>
+                    <div class="form-group">
+                        <label>
+                            Codigo
+                        </label>
+                        <div class="col-6">
+                            <input id="inCodigo"
+                                   class="cts_forms form-control"
+                                   asp-for="@Model.Salon!.Codigo" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            CupoMax
+                        </label>
+                        <div class="col-6">
+                            <input id="inCupoMax"
+                                   class="cts_forms form-control"
+                                   asp-for="@Model.Salon!.CupoMax" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            CupoActual
+                        </label>
+                        <div class="col-6">
+                            <input id="inCupoActual"
+                                   class="cts_forms form-control"
+                                   asp-for="@Model.Salon!.CupoActual" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            Fecha
+                        </label>
+                        <div class="col-6">
+                            <input id="inFecha"
+                                   class="cts_forms form-control"
+                                   asp-for="@Model.Salon!.Fecha" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label">
+                            Estudiante
+                        </label>
+                        <div class="col-lg-6">
+                            <select id="inEstudiante"
+                                    class="form-control"
+                                    asp-for="@Model.Salon!.Estudiante"
+                                    asp-items="@(new SelectList(Model.Estudiantes, "Id", "Nombre"))">
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+            @if (ViewData.ContainsKey("Mensaje"))
+            {
+                @await Html.PartialAsync("../Emergentes/Mensajes.cshtml")
+                ;
+            }
+
+            @if (Model.Salon != null && Model.Borrando)
+            {
+                <div class='popup'>
+                    <div class='pp_ms_inner'>
+                        <div style='width:95%'>
+                            <h2 align="left">
+                                Mensaje
+                            </h2>
+
+                            <h6 align="left">
+                                Desea borrar La Salon?
+                            </h6>
+                            <h6 align="left">
+                                @Model.Salon!.Codigo
+                            </h6>
+
+                            <input type="submit"
+                                   value="Cerrar"
+                                   asp-page-handler="BtCerrar"
+                                   class="btn btn-secondary" />
+                            <input type="submit"
+                                   value="Borrar"
+                                   asp-page-handler="BtBorrar"
+                                   class="btn btn-secondary" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (Model != null &&
+                 Model.Lista != null &&
+                 Model.Lista.Count > 0)
+            {
+                <table class="tb_data table table-striped table-bordered table-hover">
+                    <tr>
+                        <th>
+                            Codigo
+                        </th>
+                        <th>
+                            CupoMax
+                        </th>
+                        <th>
+                            CupoActual
+                        </th>
+
+                        <th class="cl_hidden">
+                            Fecha
+                        </th>
+                        <th class="cl_hidden">
+                            Estudiante
+                        </th>
+                        <th>
+                            Acciones
+                        </th>
+
+                    </tr>
+                    @foreach (var elemento in Model.Lista)
+                    {
+                        <tr>
+                            <td>
+                                @elemento.Codigo
+                            </td>
+                            <td>
+                                @elemento.CupoMax
+                            </td>
+                            <td>
+                                @elemento.CupoActual
+                            </td>
+                           
+                            <td class="cl_hidden">
+                                @elemento.Fecha.ToString("dd/MM/yyyy")
+                            </td>
+                            <td class="cl_hidden">
+                                @elemento._Estudiante!.Nombre
+                            </td>
+                            <td>
+                                <input type="submit"
+                                       value="Modicar"
+                                       asp-page-handler="BtModificar"
+                                       class="btn btn-secondary"
+                                       asp-route-data="@elemento.Id" />
+                                <input type="submit"
+                                       value="Borrar"
+                                       asp-page-handler="BtBorrarVal"
+                                       class="btn btn-secondary"
+                                       asp-route-data="@elemento.Id" />
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+        </form>
+    </div>
+</center>

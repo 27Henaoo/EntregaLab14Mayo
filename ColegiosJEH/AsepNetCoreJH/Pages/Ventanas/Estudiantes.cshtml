@@ -1,0 +1,208 @@
+﻿@page
+@model EstudiantesModel
+@{
+    ViewData["Title"] = "Estudiantes";
+}
+<center>
+    <div>
+        <form method="POST"
+              enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+
+            <div align="left">
+                <h3>Estudiantes</h3>
+            </div>
+
+            <div>
+                <input type="submit"
+                       value="Refrescar"
+                       class="btn btn-secondary"
+                       asp-page-handler="BtRefrescar" />
+                <input type="submit"
+                       value="Nuevo"
+                       class="btn btn-secondary"
+                       asp-page-handler="BtNuevo"
+                       disabled="@(Model.Estudiante != null)" />
+                <input type="submit"
+                       value="Guardar"
+                       class="btn btn-secondary"
+                       asp-page-handler="BtGuardar"
+                       disabled="@(Model.Estudiante == null)" />
+            </div>
+
+            @if (Model.Estudiante != null)
+            {
+                <input type="hidden"
+                       asp-for="@Model.Estudiante!.Id" />
+
+                <div>
+                    <div class="form-group">
+                        <label>
+                            Nombre
+                        </label>
+                        <div class="col-6">
+                            <input id="inNombre"
+                                   class="cts_forms form-control"
+                                   asp-for="@Model.Estudiante!.Nombre" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            TipoPersona
+                        </label>
+                        <div class="col-6">
+                            <input id="inTipoPersona"
+                                   class="cts_forms form-control"
+                                   asp-for="@Model.Estudiante!.TipoPersona" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Voto
+                        </label>
+                        <div class="col-6">
+                            <input id="inVoto"
+                                   asp-for="@Model.Estudiante!.Voto" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            CostoMatricula
+                        </label>
+                        <div class="col-6">
+                            <input id="inCostoMatricula"
+                                   class="cts_forms form-control"
+                                   asp-for="@Model.Estudiante!.CostoMatricula" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Descuento
+                        </label>
+                        <div class="col-6">
+                            <input id="inDescuento"
+                                   class="cts_forms form-control"
+                                   asp-for="@Model.Estudiante!.Descuento" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Fecha
+                        </label>
+                        <div class="col-6">
+                            <input id="inFecha"
+                                   class="cts_forms form-control"
+                                   asp-for="@Model.Estudiante!.Fecha" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (ViewData.ContainsKey("Mensaje"))
+            {
+                @await Html.PartialAsync("../Emergentes/Mensajes.cshtml")
+                ;
+            }
+
+            @if (Model.Estudiante != null && Model.Borrando)
+            {
+                <div class='popup'>
+                    <div class='pp_ms_inner'>
+                        <div style='width:95%'>
+                            <h2 align="left">
+                                Mensaje
+                            </h2>
+
+                            <h6 align="left">
+                                Desea borrar La Estudiante?
+                            </h6>
+                            <h6 align="left">
+                                @Model.Estudiante!.Nombre
+                            </h6>
+
+                            <input type="submit"
+                                   value="Cerrar"
+                                   asp-page-handler="BtCerrar"
+                                   class="btn btn-secondary" />
+                            <input type="submit"
+                                   value="Borrar"
+                                   asp-page-handler="BtBorrar"
+                                   class="btn btn-secondary" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (Model != null &&
+                 Model.Lista != null &&
+                 Model.Lista.Count > 0)
+            {
+                <table class="tb_data table table-striped table-bordered table-hover">
+                    <tr>
+                        <th>
+                            Nombre
+                        </th>
+                        <th>
+                            TipoPersona
+                        </th>
+                        <th>
+                            Voto
+                        </th>
+                        <th>
+                            CostoMatricula
+                        </th>
+                        <th class="cl_hidden">
+                            Descuento
+                        </th>
+
+                        <th class="cl_hidden">
+                            Fecha
+                        </th>
+                        <th>
+                            Acciones
+                        </th>
+
+                    </tr>
+                    @foreach (var elemento in Model.Lista)
+                    {
+                        <tr>
+                            <td>
+                                @elemento.Nombre
+                            </td>
+                            <td>
+                                @elemento.TipoPersona
+                            </td>
+                            <td>
+                                @elemento.Voto
+                            </td>
+                            <td>
+                                @elemento.CostoMatricula
+                            </td>
+
+                            <td>
+                                @elemento.Descuento
+                            </td>
+
+                            <td class="cl_hidden">
+                                @elemento.Fecha.ToString("dd/MM/yyyy")
+                            </td>
+
+                            <td>
+                                <input type="submit"
+                                       value="Modicar"
+                                       asp-page-handler="BtModificar"
+                                       class="btn btn-secondary"
+                                       asp-route-data="@elemento.Id" />
+                                <input type="submit"
+                                       value="Borrar"
+                                       asp-page-handler="BtBorrarVal"
+                                       class="btn btn-secondary"
+                                       asp-route-data="@elemento.Id" />
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+        </form>
+    </div>
+</center>

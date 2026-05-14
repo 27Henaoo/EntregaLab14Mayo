@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/1.Presentacion/">
+    <Project Path="AsepNetCoreJH/AsepNetCoreJH.csproj" />
+    <Project Path="LibPresentacionesJH/LibPresentacionesJH.csproj" />
+  </Folder>
+  <Folder Name="/2.Servicios/">
+    <Project Path="LibJHServicios/LibJHServicios.csproj" />
+  </Folder>
+  <Folder Name="/3.UTs/" />
+  <Folder Name="/4.APIs/">
+    <Project Path="API.JHColegio/API.JHColegio.csproj" />
+  </Folder>
+  <Folder Name="/5.Comunes/">
+    <Project Path="LibJHModelos/LibJHModelos.csproj" />
+  </Folder>
+</Solution>

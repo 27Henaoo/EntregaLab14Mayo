@@ -1,0 +1,6 @@
+@API.JHColegio_HostAddress = http://localhost:5198
+
+GET {{API.JHColegio_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
